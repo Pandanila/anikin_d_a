@@ -7,6 +7,6 @@ include_directories(.)
 
 add_subdirectory(rational)
 
-add_executable(main main.cpp)
+add_executable(rational.doctest rational.doctest.cpp)
 
-target_link_libraries(main rational)
+target_link_libraries(rational.doctest rational)

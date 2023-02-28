@@ -15,8 +15,6 @@ public:
     Rational(const Rational&) = default;
     Rational(int32_t in_num, int32_t in_denum);
     ~Rational() = default;
-    std::istream& ReadFrom(std::istream& istrm);
-    std::ostream& WriteTo(std::ostream& ostrm) const;
     Rational& gcd();
     Rational& common_denom(Rational& second);
     Rational& operator+=(Rational& rhs);
@@ -29,6 +27,8 @@ public:
     bool operator<( Rational &rhs);
     bool operator>=( Rational &rhs);
     bool operator<=( Rational &rhs);
+    std::istream& ReadFrom(std::istream& istrm);
+    std::ostream& WriteTo(std::ostream& ostrm) const;
 };
 
 //input-output
