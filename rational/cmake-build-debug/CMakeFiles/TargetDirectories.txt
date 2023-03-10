@@ -1,6 +1,0 @@
-C:/Users/danan/CLionProjects/rational/cmake-build-debug/CMakeFiles/rational.doctest.dir
-C:/Users/danan/CLionProjects/rational/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/danan/CLionProjects/rational/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-C:/Users/danan/CLionProjects/rational/cmake-build-debug/rational/CMakeFiles/rational.dir
-C:/Users/danan/CLionProjects/rational/cmake-build-debug/rational/CMakeFiles/edit_cache.dir
-C:/Users/danan/CLionProjects/rational/cmake-build-debug/rational/CMakeFiles/rebuild_cache.dir
