@@ -1,0 +1,22 @@
+"C:\Program Files\JetBrains\CLion 2022.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2022.3/bin/ninja/win/ninja.exe" -DCMAKE_TOOLCHAIN_FILE=C:/Users/danan/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake -G Ninja -S C:\Users\danan\CLionProjects\rational -B C:\Users\danan\CLionProjects\rational\cmake-build-debug
+CMake Error at C:/Users/danan/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake:852 (_find_package):
+  By not providing "Finddoctest.cmake" in CMAKE_MODULE_PATH this project has
+  asked CMake to find a package configuration file provided by "doctest", but
+  CMake did not find one.
+
+  Could not find a package configuration file provided by "doctest" with any
+  of the following names:
+
+    doctestConfig.cmake
+    doctest-config.cmake
+
+  Add the installation prefix of "doctest" to CMAKE_PREFIX_PATH or set
+  "doctest_DIR" to a directory containing one of the above files.  If
+  "doctest" provides a separate development package or SDK, be sure it has
+  been installed.
+Call Stack (most recent call first):
+  CMakeLists.txt:17 (find_package)
+
+
+-- Configuring incomplete, errors occurred!
+See also "C:/Users/danan/CLionProjects/rational/cmake-build-debug/CMakeFiles/CMakeOutput.log".
