@@ -1,15 +1,46 @@
-#include <iostream>
-#include <istream>
-#include <ostream>
 #include "prj.lab/rational/include/rational/rational.h"
+#include <iostream>
+#include <stdexcept>
+#include <cstdint>
 
-Rational::Rational(int32_t in_num, int32_t in_denum){
-    if (in_denum <= 0){
-        throw;
+int32_t gcd(int32_t a, int32_t b){
+    int32_t divisor = 0;
+
+    while (a % b != 0 || b % a != 0){
+        if (a > b){
+            a -= b;
+        }
+        else{
+            b -= a;
+        }
     }
-    else {
-        num = in_num;
-        denum = in_denum;
+    divisor = std::min(a, b);
+
+    return divisor;
+}
+
+
+//input-output
+inline std::istream& operator>>(std::istream& istrm, Rational& rhs){
+    return rhs.ReadFrom(istrm);
+};
+inline std::ostream& operator<<(std::ostream& ostrm, Rational& rhs){
+    return rhs.WriteTo(ostrm);
+};
+
+Rational::Rational(const int32_t in_num, const int32_t in_denum){
+    if (in_denum == 0){
+        throw std::invalid_argument("division by zero");
+    }
+
+    int32_t d = gcd(in_num, in_denum);
+
+    num = in_num / d;
+    denum = in_denum / d;
+
+    if (denum < 0){
+        denum = - denum;
+        num = - num;
     }
 }
 
@@ -18,12 +49,10 @@ std::istream& Rational::ReadFrom(std::istream& istrm){
     int32_t in_num = 0;
     int32_t in_denum = 1;
     istrm >> in_num >> slash >> in_denum;
-    //std::cout << in_num << ' ' << slash << ' ' << in_denum << '\n';
-    if (istrm.good()){
+    if (istrm.good() || !istrm.fail() && istrm.eof()){
         if (slash == Rational::separator){
-            num = in_num;
-            denum = in_denum;
-            gcd();
+            istrm.clear();
+            *this = Rational(in_num, in_denum);
         }
         else{
             istrm.setstate(std::ios_base::failbit);
@@ -37,65 +66,23 @@ std::ostream& Rational::WriteTo(std::ostream& ostrm) const{
     return ostrm;
 }
 
-
-Rational& Rational::gcd(){
-
-    int32_t a = std::abs(num);
-    int32_t b = std::abs(denum);
-    int32_t divisor = 0;
-
-    while (a % b != 0 || b % a != 0){
-        if (a > b){
-            a -= b;
-        }
-        else{
-            b -= a;
-        }
-    }
-    divisor = std::min(a, b);
-
-    num /= divisor;
-    denum /= divisor;
-
-    return *this;
-
-}
-
-Rational& Rational::common_denom(Rational& second){
-    int32_t common_denom;
-    common_denom = denum * second.denum;
-    num *= second.denum;
-    second.num *= denum;
-    denum = common_denom;
-    second.denum = common_denom;
-    return *this;
-}
-
 Rational& Rational::operator+=(Rational& rhs) {
-    common_denom(rhs);
-    num += rhs.num;
-    gcd();
+    *this = Rational(num += rhs.num, denum += rhs.denum);
     return *this;
 }
 
 Rational& Rational::operator-=(Rational& rhs) {
-    common_denom(rhs);
-    num -= rhs.num;
-    gcd();
+    *this = Rational(num -= rhs.num, denum -= rhs.denum);
     return *this;
 }
 
 Rational& Rational::operator*=(const Rational& rhs) {
-    num *= rhs.num;
-    denum *= rhs.denum;
-    gcd();
+    *this = Rational(num *= rhs.num, denum *= rhs.denum);
     return *this;
 }
 
 Rational& Rational::operator/=(const Rational& rhs){
-    num *= rhs.denum;
-    denum *= rhs.num;
-    gcd();
+    *this = Rational(num /= rhs.num, denum /= rhs.denum);
     return *this;
 }
 
@@ -107,24 +94,25 @@ bool Rational::operator!=(const Rational& rhs) const {
     return (num != rhs.num) || (denum != rhs.denum);
 }
 
-bool Rational::operator>(Rational &rhs) {
-    common_denom(rhs);
-    return num > rhs.num;
+bool Rational::operator>(const Rational &rhs) const{
+    return (num * rhs.denum - denum * rhs.num) > 0;
 };
 
-bool Rational::operator<( Rational &rhs){
-    common_denom(rhs);
-    return num < rhs.num;
+bool Rational::operator<(const Rational &rhs) const{
+    return (num * rhs.denum - denum * rhs.num) > 0;
 }
 
-bool Rational::operator>=( Rational &rhs){
-    common_denom(rhs);
-    return num >= rhs.num;
+bool Rational::operator>=(const Rational &rhs) const{
+    return (num * rhs.denum - denum * rhs.num) >= 0;
 }
 
-bool Rational::operator<=( Rational &rhs){
-    common_denom(rhs);
-    return num <= rhs.num;
+bool Rational::operator<=(const Rational &rhs) const{
+    return (num * rhs.denum - denum * rhs.num) >= 0;
+}
+
+Rational& Rational::operator-() {
+    num = -num;
+    return *this;
 }
 
 Rational& operator+(Rational& lhs, Rational& rhs){
