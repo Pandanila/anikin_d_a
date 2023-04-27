@@ -1,7 +1,8 @@
-#include "prj.lab/rational/include/rational/rational.h"
 #include <iostream>
 #include <stdexcept>
 #include <cstdint>
+#include "include/rational/rational.h"
+
 
 int32_t gcd(int32_t a, int32_t b){
     int32_t divisor = 0;
@@ -18,7 +19,6 @@ int32_t gcd(int32_t a, int32_t b){
 
     return divisor;
 }
-
 
 //input-output
 inline std::istream& operator>>(std::istream& istrm, Rational& rhs){
@@ -71,12 +71,12 @@ std::ostream& Rational::WriteTo(std::ostream& ostrm) const{
     return ostrm;
 }
 
-Rational& Rational::operator+=(Rational& rhs) {
+Rational& Rational::operator+=(const Rational& rhs) {
     *this = Rational(num += rhs.num, denum += rhs.denum);
     return *this;
 }
 
-Rational& Rational::operator-=(Rational& rhs) {
+Rational& Rational::operator-=(const Rational& rhs) {
     *this = Rational(num -= rhs.num, denum -= rhs.denum);
     return *this;
 }
@@ -90,6 +90,26 @@ Rational& Rational::operator/=(const Rational& rhs){
     *this = Rational(num /= rhs.num, denum /= rhs.denum);
     return *this;
 }
+
+Rational& Rational::operator+=(const int32_t& rhs){
+    *this += Rational(rhs);
+    return *this;
+}
+
+Rational& Rational::operator-=(const int32_t& rhs){
+    *this -= Rational(rhs);
+    return *this;
+}
+
+Rational& Rational::operator*=(const int32_t& rhs){
+    *this *= Rational(rhs);
+    return *this;
+};
+
+Rational& Rational::operator/=(const int32_t& rhs){
+    *this /= Rational(rhs);
+    return *this;
+};
 
 bool Rational::operator==(const Rational& rhs) const {
     return (num == rhs.num) && (denum == rhs.denum);
@@ -115,10 +135,56 @@ bool Rational::operator<=(const Rational &rhs) const{
     return (num * rhs.denum - denum * rhs.num) >= 0;
 }
 
+bool Rational::operator==(const int32_t& rhs) const{
+    return (*this == Rational(rhs));
+};
+
+bool Rational::operator!=(const int32_t& rhs) const{
+    return (*this != Rational(rhs));
+};
+
+bool Rational::operator>(const int32_t& rhs) const{
+    return (*this > Rational(rhs));
+};
+
+bool Rational::operator<(const int32_t& rhs) const{
+    return (*this < Rational(rhs));
+};
+
+bool Rational::operator>=(const int32_t& rhs) const{
+    return (*this >= Rational(rhs));
+};
+
+bool Rational::operator<=(const int32_t& rhs) const{
+    return (*this <= Rational(rhs));
+};
+
 Rational& Rational::operator-() {
     num = -num;
     return *this;
 }
+
+Rational& Rational::operator++(){
+    *this += 1;
+    return *this;
+};
+
+const Rational Rational::operator++(int){
+    const Rational old = *this;
+    *this += 1;
+    return old;
+};
+
+Rational& Rational::operator--(){
+    *this -= 1;
+    return *this;
+};
+
+const Rational Rational::operator--(int){
+    Rational old = *this;
+    *this += 1;
+    return old;
+};
 
 Rational& operator+(Rational& lhs, Rational& rhs){
     lhs += rhs;
