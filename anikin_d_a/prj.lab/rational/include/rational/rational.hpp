@@ -1,7 +1,3 @@
-//
-// Created by danan on 28.02.2023.
-//
-
 #ifndef RATIONAL_RATIONAL_H
 #define RATIONAL_RATIONAL_H
 
@@ -18,16 +14,35 @@ public:
     explicit Rational(const int32_t in_num) noexcept;
     ~Rational() = default;
 
-    Rational& operator+=(Rational& rhs);
-    Rational& operator-=(Rational& rhs);
+    Rational& operator+=(const Rational& rhs);
+    Rational& operator-=(const Rational& rhs);
     Rational& operator*=(const Rational& rhs);
     Rational& operator/=(const Rational& rhs);
+
+    Rational& operator+=(const int32_t& rhs);
+    Rational& operator-=(const int32_t& rhs);
+    Rational& operator*=(const int32_t& rhs);
+    Rational& operator/=(const int32_t& rhs);
+
+    Rational& operator++();
+    const Rational operator++(int);
+    Rational& operator--();
+    const Rational operator--(int);
+
     bool operator==(const Rational& rhs) const;
     bool operator!=(const Rational &rhs) const;
     bool operator>(const Rational &rhs) const;
     bool operator<(const Rational &rhs) const;
     bool operator>=(const Rational &rhs) const;
     bool operator<=(const Rational &rhs) const;
+
+    bool operator==(const int32_t& rhs) const;
+    bool operator!=(const int32_t& rhs) const;
+    bool operator>(const int32_t& rhs) const;
+    bool operator<(const int32_t& rhs) const;
+    bool operator>=(const int32_t& rhs) const;
+    bool operator<=(const int32_t& rhs) const;
+
     Rational& operator-();
 
     std::istream& ReadFrom(std::istream& istrm);
@@ -42,7 +57,5 @@ Rational& operator+(Rational& lhs, Rational& rhs);
 Rational& operator-(Rational& lhs, Rational& rhs);
 Rational& operator*(Rational& lhs, Rational& rhs);
 Rational& operator/(Rational& lhs, Rational& rhs);
-
-
 
 #endif //RATIONAL_RATIONAL_H
