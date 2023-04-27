@@ -1,5 +1,8 @@
-#ifndef RATIONAL_RATIONAL_H
-#define RATIONAL_RATIONAL_H
+#ifndef RATIONAL_HPP
+#define RATIONAL_HPP
+
+#include <cstdint>
+#include <iosfwd>
 
 int32_t gcd(int32_t a, int32_t b);
 class Rational{
@@ -58,4 +61,4 @@ Rational& operator-(Rational& lhs, Rational& rhs);
 Rational& operator*(Rational& lhs, Rational& rhs);
 Rational& operator/(Rational& lhs, Rational& rhs);
 
-#endif //RATIONAL_RATIONAL_H
+#endif 
