@@ -15,6 +15,7 @@ public:
     Rational() = default;
     Rational(const Rational&) = default;
     Rational(int32_t in_num, int32_t in_denum);
+    explicit Rational(const int32_t in_num) noexcept;
     ~Rational() = default;
 
     Rational& operator+=(Rational& rhs);
