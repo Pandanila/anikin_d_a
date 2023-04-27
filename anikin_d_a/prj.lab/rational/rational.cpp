@@ -44,6 +44,11 @@ Rational::Rational(const int32_t in_num, const int32_t in_denum){
     }
 }
 
+Rational::Rational(const int32_t in_num) noexcept{
+    num = in_num;
+    denum = 1;
+};
+
 std::istream& Rational::ReadFrom(std::istream& istrm){
     char slash = 0;
     int32_t in_num = 0;
