@@ -1,0 +1,105 @@
+#include <iostream>
+#include <cmath>
+#include <iostream>
+
+class Quad{
+private:
+    double x_0 = 0;
+    double y_0 = 0;
+    double x_1 = 0;
+    double y_1 = 0;
+public:
+    Quad() = default;
+    ~Quad() = default;
+    Quad(double start_x, double start_y, double finish_x, double finish_y);
+    [[nodiscard]] double GetW() const;
+    [[nodiscard]] double GetH() const;
+    Quad SetW(double w);
+    Quad SetH(double h);
+    //std::istream operator>>(std::istream istr, Quad q);
+
+};
+
+Quad::Quad(double start_x, double start_y, double finish_x, double finish_y) {
+    x_0 = start_x;
+    y_0 = start_y;
+    x_1 = finish_x;
+    y_1 = finish_y;
+}
+
+Quad Quad::SetW(double w) {
+    x_1 = x_0 + w;
+    return *this;
+}
+
+Quad Quad::SetH(double h) {
+    y_1 = y_0 + h;
+    return *this;
+}
+
+/*std::istream Quad::operator>>(std::istream istr, Quad q){
+    std::cin>>x_0>>y_0>>x_1>>y_1;
+}*/
+
+double Quad::GetW() const{
+    return std::abs(x_1 - x_0);
+}
+
+double Quad::GetH() const{
+    return std::abs(y_1 - y_0);
+}
+
+
+class Rect:Quad{
+private:
+    double x_0 = 0;
+    double y_0 = 0;
+    double a = 0;
+public:
+    Rect(double start_x, double start_y, double a);
+    double GetH();
+};
+
+double Rect::GetH() {
+    return a;
+}
+
+Rect::Rect(double start_x, double start_y, double size){
+    x_0 = start_x;
+    y_0 = start_y;
+    a = size;
+}
+
+class Square:Quad{
+private:
+    double x_0 = 0;
+    double y_0 = 0;
+    double h = 0;
+    double w = 0;
+public:
+    Square(double start_x, double start_y, double height, double weight);
+};
+
+Square::Square(double start_x, double start_y, double height, double weight){
+    x_0 = start_x;
+    y_0 = start_y;
+    h = height;
+    w = weight;
+}
+
+
+
+int main() {
+    Quad q = Quad();
+    std::cout << q.GetW() << '\n';
+    q.SetW(12);
+    std::cout << q.GetW();
+
+    Rect r = Rect(1, 3, 12);
+    std::cout << r.GetH();
+
+
+    //r.GetH();
+
+    return 0;
+}
