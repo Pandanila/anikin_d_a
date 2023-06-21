@@ -1,0 +1,36 @@
+\doxysection{library.\+h}
+\hypertarget{library_8h_source}{}\label{library_8h_source}\index{C:/Users/danan/CLionProjects/cw\_lib/gradient\_lib/library.h@{C:/Users/danan/CLionProjects/cw\_lib/gradient\_lib/library.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CW\_LIB\_LIBRARY\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CW\_LIB\_LIBRARY\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <opencv2/core.hpp>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <opencv2/imgcodecs.hpp>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <opencv2/highgui.hpp>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <opencv2/imgproc.hpp>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <typeinfo>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00018\ cv::Mat\ ConvertToFloat(cv::Mat\ img1);}
+\DoxyCodeLine{00019\ cv::Mat\ GetHsxMatrix();}
+\DoxyCodeLine{00020\ cv::Mat\ GetHsyMatrix();}
+\DoxyCodeLine{00021\ cv::Mat\ CreateImgXMatrix(cv::Mat\ img,\ cv::Mat\ Hsx);}
+\DoxyCodeLine{00022\ cv::Mat\ CreateImgYMatrix(cv::Mat\ img,\ cv::Mat\ Hsy);}
+\DoxyCodeLine{00023\ cv::Mat\ CreateIbxMatrix(cv::Mat\ imgx);}
+\DoxyCodeLine{00024\ cv::Mat\ CreateIbyMatrix(cv::Mat\ imgy);}
+\DoxyCodeLine{00025\ cv::Mat\ CreateIgxMatrix(cv::Mat\ imgx);}
+\DoxyCodeLine{00026\ cv::Mat\ CreateIgyMatrix(cv::Mat\ imgy);}
+\DoxyCodeLine{00027\ cv::Mat\ CreateIrxMatrix(cv::Mat\ imgx);}
+\DoxyCodeLine{00028\ cv::Mat\ CreateIryMatrix(cv::Mat\ imgy);}
+\DoxyCodeLine{00029\ std::vector<cv::Mat>\ GetAllMatrix(cv::Mat\ img);}
+\DoxyCodeLine{00030\ std::vector<std::vector<float>>\ GetE(std::vector<cv::Mat>\ allmatrix);}
+\DoxyCodeLine{00031\ std::vector<std::vector<float>>\ GetF(std::vector<cv::Mat>\ allmatrix);}
+\DoxyCodeLine{00032\ cv::Mat\ GradientInGray(std::vector<std::vector<float>>\ E,\ cv::Mat\ img);}
+\DoxyCodeLine{00033\ cv::Mat\ GradientInHSV(std::vector<std::vector<float>>\ F,\ std::vector<std::vector<float>>\ E,\ cv::Mat\ img,\ \textcolor{keywordtype}{float}\ param);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//CW\_LIB\_LIBRARY\_H}}
+
+\end{DoxyCode}
