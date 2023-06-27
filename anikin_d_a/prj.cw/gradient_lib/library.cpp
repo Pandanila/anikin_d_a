@@ -327,27 +327,3 @@ cv::Mat GradientInGray(std::vector<std::vector<float>> E, cv::Mat img){
     return grayImg;
 }
 
-/**
- * @brief Формирует матрицу HSV-изображения по векторам E, F и параметру param
- * @param F Вектор F со значениями локальных градиентов std::vector<std::vector<float>> F
- * @param E Вектор E со значениями локальных градиентов std::vector<std::vector<float>> E
- * @param img Исходное изображение cv::Mat img
- * @param param параметр float param, отвечающий за значение Value в HSV-изображении
- * @return Возвращает матрицу HSV-изображения cv::Mat HSVImg
- */
-cv::Mat GradientInHSV(std::vector<std::vector<float>> F, std::vector<std::vector<float>> E, cv::Mat img, float param) {
-    cv::Mat HSVImg;
-    cv::cvtColor(img, HSVImg, cv::COLOR_BGR2HSV);
-    HSVImg = ConvertToFloat(HSVImg);
-
-    for (int i = 0; i < HSVImg.rows; i++) {
-        for (int j = 0; j < HSVImg.cols; j++) {
-            HSVImg.at<cv::Vec3f>(i, j)[0] = F[i][j];
-            HSVImg.at<cv::Vec3f>(i, j)[1] = E[i][j] / 255.0;
-            HSVImg.at<cv::Vec3f>(i, j)[2] = param;
-        }
-    }
-
-    return HSVImg;
-}
-
