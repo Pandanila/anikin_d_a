@@ -25,6 +25,5 @@ std::vector<cv::Mat> GetAllMatrix(cv::Mat img);
 std::vector<std::vector<float>> GetE(std::vector<cv::Mat> allmatrix);
 std::vector<std::vector<float>> GetF(std::vector<cv::Mat> allmatrix);
 cv::Mat GradientInGray(std::vector<std::vector<float>> E, cv::Mat img);
-cv::Mat GradientInHSV(std::vector<std::vector<float>> F, std::vector<std::vector<float>> E, cv::Mat img, float param);
 
 #endif //CW_LIB_LIBRARY_H
