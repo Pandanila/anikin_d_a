@@ -9,44 +9,35 @@
 
 int main(int argc, char **argv ) {
     system("chcp 65001");
-    std::string OutputDirectory;
-    std::string InputDirectory;
+    std::string OutputName;
+    std::string InputName;
 
 
     bool loading = false;
     bool saving = false;
-    bool visualiseInGray = false;
-    bool visualiseInHSV = false;
-    bool processingInGray = false;
-    bool processingInHSV = false;
+    bool visualise = false;
+    bool processing = false;
     bool help = false;
     bool show = true;
 
     if (argc == 1){
         std::cout << "Описание доступных команд\n";
-        std::cout << "-VG : Визуализировать результат в градациях серого" << '\n';
-        std::cout << "-VH : Визуализировать результат в HSV" << '\n';
-        std::cout << "-PG : Обработать изображение для сохранения в градациях серого" << '\n';
-        std::cout << "-PH : Обработать изображение для сохранения в HSV" << '\n';
-        std::cout << "Следующие команды нужно использовать по образцу: -[command]=[way]" << '\n';
         std::cout << "-H : Показать возможные команды" << std::endl;
+        std::cout << "-V : Визуализировать результат" << '\n';
+        std::cout << "-P : Обработать изображение и создать массивы E(модули значений градиентов)"
+                     " и F(углы ориентации градиентов)" << '\n';
+        std::cout << "Следующие команды нужно использовать по образцу: -[command]=[way]" << '\n';
         std::cout << "-l : Указать путь к изображению" << '\n';
         std::cout << "-s : Указать путь для сохранения результатов" << '\n';
         show = false;
     }
 
     for (int i = 1; i < argc; i ++) {
-        if(static_cast<std::string>(argv[i]) == "-VG"){
-            visualiseInGray = true;
+        if(static_cast<std::string>(argv[i]) == "-V"){
+            visualise = true;
         }
-        else if(static_cast<std::string>(argv[i]) == "-VH"){
-            visualiseInHSV = true;
-        }
-        else if(static_cast<std::string>(argv[i]) == "-PG"){
-            processingInGray = true;
-        }
-        else if(static_cast<std::string>(argv[i]) == "-PH"){
-            processingInHSV = true;
+        else if(static_cast<std::string>(argv[i]) == "-P"){
+            processing = true;
         }
         else if(static_cast<std::string>(argv[i]) == "-H"){
             help = true;
@@ -57,15 +48,14 @@ int main(int argc, char **argv ) {
             if (param[0] == '-' && param[2] == '='){
                 if (param[1] == 'l'){
                     loading = true;
-                    InputDirectory = param.substr(3,param.size() - 3);
+                    InputName = param.substr(3,param.size() - 3);
                 }
                 else if (param[1] == 's'){
                     saving = true;
-                    OutputDirectory = param.substr(3,param.size() - 3);
+                    OutputName = param.substr(3,param.size() - 3);
 
-                    //checking of file existing
                     std::ifstream file;
-                    file.open(OutputDirectory);
+                    file.open(OutputName);
                     if (file){
                         saving = false;
                         std::cout << "File exists" << '\n';
@@ -87,15 +77,20 @@ int main(int argc, char **argv ) {
 
     if (show){
         if (loading){
-            cv::Mat img = cv::imread(InputDirectory);
+            cv::Mat img = cv::imread(InputName);
             cv::Mat grayImg;
-            cv::Mat HSVImg;
+
+            std::vector<std::vector<float>> E;
+            std::vector<std::vector<float>> F;
+            std::vector<cv::Mat> megamatrix;
 
             if (help){
                 std::cout << "Описание доступных команд\n";
-                std::cout << "Следующие команды нужно использовать по образцу: -[command]=[way]" << '\n';
+                std::cout << "Следующие команды нужно использовать по образцу:"
+                             " -[command]=[way]" << '\n';
                 std::cout << "-l : Указать путь к изображению" << '\n';
-                std::cout << "-s : Указать путь для сохранения результатов (формат сохраняемого файла - строго tiff)" << '\n';
+                std::cout << "-s : Указать путь для сохранения результатов"
+                             " (формат сохраняемого файла - строго tiff)" << '\n';
                 std::cout << "-h : Показать возможные команды" << std::endl;
                 show = false;
             }
@@ -105,69 +100,48 @@ int main(int argc, char **argv ) {
                 return 1;
             }
 
-            if (processingInGray){
-                std::vector<std::vector<float>> E;
-                std::vector<cv::Mat> megamatrix = GetAllMatrix(img);
-                E = GetE(megamatrix);
-                grayImg = GradientInGray(E, img);
-            }
-
-            if(processingInHSV){
-                std::vector<std::vector<float>> E;
-                std::vector<std::vector<float>> F;
+            if (processing){
                 std::vector<cv::Mat> megamatrix = GetAllMatrix(img);
                 E = GetE(megamatrix);
                 F = GetF(megamatrix);
-                HSVImg = GradientInHSV(F, E, img, 0.5);
+                grayImg = GradientInGray(E, img);
+                std::ofstream out1;
+                std::ofstream out2;
+                out1.open("E.txt");
+                out2.open("F.txt");
+                for (int i = 0; i < F.size(); i++){
+                    for (int j = 0; j < F[i].size(); j++){
+                        out1 << E[i][j] << std::endl;
+                        out2 << F[i][j] << std::endl;
+                    }
+                }
+                out1.close();
+                out2.close();
+
+                if (saving){
+                    saving = false;
+                    cv::imwrite(OutputName, grayImg);
+                    system("visualisation.py S");
+
+                }
             }
 
-            if (visualiseInGray){
-                std::vector<std::vector<float>> E;
+            if (visualise){
                 cv::imshow("Source Image", img);
-                std::vector<cv::Mat> megamatrix = GetAllMatrix(img);
-                E = GetE(megamatrix);
-                grayImg = GradientInGray(E, img);
                 cv::imshow("Result In Grayscale", grayImg);
 
                 if (saving){
                     saving = false;
-                    cv::imwrite(OutputDirectory, grayImg);
+                    cv::imwrite(OutputName, grayImg);
+                    system("visualisation.py S");
                 }
+                system("visualisation.py V");
             }
 
-            if (visualiseInHSV){
-                std::vector<std::vector<float>> E;
-                std::vector<std::vector<float>> F;
-                cv::imshow("Source Image", img);
-                std::vector<cv::Mat> megamatrix = GetAllMatrix(img);
-                E = GetE(megamatrix);
-                F = GetF(megamatrix);
-                HSVImg = GradientInHSV(F, E, img, 0.5);
-                cv::imshow("Result In HSV", HSVImg);
-
-                if (saving){
-                    saving = false;
-                    cv::cvtColor(HSVImg, img, cv::COLOR_HSV2BGR);
-                    cv::imwrite(OutputDirectory, HSVImg);
-                }
-            }
-
-            if ((saving && processingInGray)||(saving && visualiseInGray)){
-                cv::imwrite(OutputDirectory, grayImg);
-                saving = false;
-            }
-//            else if ((saving && processingInHSV)||(saving && visualiseInHSV)){
-//                cv::cvtColor(HSVImg, img, cv::COLOR_HSV2BGR);
-//                cv::imwrite(OutputDirectory, img);
-//                saving = false;
-//            }
             else if (saving){
-                cv::imwrite(OutputDirectory, img);
+                cv::imwrite(OutputName, img);
                 saving = false;
             }
-
-
-
         }
 
         if (help){
@@ -184,4 +158,3 @@ int main(int argc, char **argv ) {
     }
 
 }
-
